@@ -118,7 +118,7 @@ class Infected(Agent):
         return str(self.__class__) + ": " + str(self.__dict__)
 
 class Recovered(Agent):
-    def __init__(self, unique_id, model, pos, imperial=True):
+    def __init__(self, unique_id, model, pos):
         super().__init__(unique_id, model)
         self.name = "Recovered"
         self.color = "Green"
@@ -151,6 +151,7 @@ class Recovered(Agent):
             new_pos = self.pos + np.array((x, y)) * self.model.random.random() * self.model.mobility
 
         self.model.space.move_agent(self, new_pos)
+
     def set_imperial(self, home, work, travel):
           self.home = np.array(home)
           self.work = np.array(work)

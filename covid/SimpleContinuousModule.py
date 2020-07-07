@@ -1,6 +1,5 @@
 from mesa.visualization.ModularVisualization import VisualizationElement
 
-
 class SimpleCanvas(VisualizationElement):
     local_includes = ["covid/simple_continuous_canvas.js"]
     portrayal_method = None

@@ -51,14 +51,12 @@ class Covid(Model):
         self.schedule = RandomActivation(self)
         self.space = ContinuousSpace(width, height, True)
         self.make_agents()
+        self.running = True
 
-        self.count("Susceptible")
         self.datacollector = DataCollector(
             {"Susceptible": lambda m: self.count("Susceptible"),
              "Infected": lambda m: self.count("Infected"),
              "Recovered": lambda m: self.count("Recovered")})
-
-        self.running = True
 
     def make_agents(self):
         '''
@@ -103,8 +101,8 @@ class Covid(Model):
         agent_keys = list(self.schedule._agents.keys())
         susceptible = [];
         for agent_key in agent_keys:
-          if self.schedule._agents[agent_key].name == "Susceptible":
-            susceptible.append(agent_key);
+            if self.schedule._agents[agent_key].name == "Susceptible":
+                susceptible.append(agent_key)
         for agent_key in susceptible:
             agent = self.schedule._agents[agent_key]
             neighbors = self.space.get_neighbors(agent.pos, self.social_distance)
@@ -112,10 +110,10 @@ class Covid(Model):
                 if neighbor.name == "Infected":
                     asymptomatic = False
                     if (100.0 * self.random.random() < self.asymptomatic_percentage):
-                         asymptomatic = True
+                        asymptomatic = True
                     person = Infected(self.next_id(), self, agent.pos, asymptomatic)
                     if self.imperial:
-                      person.set_imperial(agent.home, agent.work, agent.travel)
+                        person.set_imperial(agent.home, agent.work, agent.travel)
                     self.space.remove_agent(agent)
                     self.schedule.remove(agent)
                     self.space.place_agent(person, person.pos)
@@ -124,7 +122,7 @@ class Covid(Model):
 
     def count(self, type):
         agent_keys = list(self.schedule._agents.keys())
-        num = 0;
+        num = 0
         for agent_key in agent_keys:
             if self.schedule._agents[agent_key].name == type:
                 num += 1

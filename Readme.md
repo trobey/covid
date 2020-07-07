@@ -13,4 +13,3 @@ Asymptomatic - Percentage of infected people that are asymptomatic.  Asymptomati
 Social Distance - Distance at which neighboring susceptible agents can become infected.
 
 Mobility - The maximum distance that an agent can travel.
-# covid
