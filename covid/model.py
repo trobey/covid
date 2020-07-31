@@ -56,7 +56,9 @@ class Covid(Model):
         self.datacollector = DataCollector(
             {"Susceptible": lambda m: self.count("Susceptible"),
              "Infected": lambda m: self.count("Infected"),
-             "Recovered": lambda m: self.count("Recovered")})
+             "Recovered": lambda m: self.count("Recovered"),
+             "Symptomatic": lambda m: self.active("symptomatic"),
+             "Asymptomatic": lambda m: self.active("asymptomatic")})
 
     def make_agents(self):
         '''
@@ -126,5 +128,18 @@ class Covid(Model):
         for agent_key in agent_keys:
             if self.schedule._agents[agent_key].name == type:
                 num += 1
+        return num
+
+    def active(self, type):
+        agent_keys = list(self.schedule._agents.keys())
+        num = 0
+        for agent_key in agent_keys:
+            if self.schedule._agents[agent_key].name == 'Infected':
+                if type == 'asymptomatic':
+                    if self.schedule._agents[agent_key].asymptomatic:
+                        num += 1
+                else:
+                    if not self.schedule._agents[agent_key].asymptomatic:
+                        num += 1
         return num
 

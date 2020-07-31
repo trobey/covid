@@ -1,10 +1,9 @@
 from mesa.visualization.ModularVisualization import ModularServer
+from .model import Covid
+from .SimpleContinuousModule import SimpleCanvas
 from mesa.visualization.modules import ChartModule
 from mesa.visualization.UserParam import UserSettableParameter
 from mesa.visualization.modules import TextElement
-
-from .model import Covid
-from .SimpleContinuousModule import SimpleCanvas
 
 def virus_draw(agent):
     return {"Shape": "circle", "r": 2, "Filled": "true", "Color": agent.color}
@@ -19,9 +18,9 @@ virus_canvas = SimpleCanvas(virus_draw, 500, 500)
 #    "social_distance": 2,
 #    "asymptomatic_percentage": 50.0,
 #}
-model_params = {"population": UserSettableParameter('slider', 'Population', 100, 0, 500),
-                "imperial": UserSettableParameter('checkbox', 'Imperial College Model', True),
-                "asymptomatic_percentage": UserSettableParameter('slider', 'Asymptomatic (%)', 50, 0, 100),
+model_params = {"imperial": UserSettableParameter('checkbox', 'Imperial College Model', True),
+                "population": UserSettableParameter('slider', 'Population', 100, 0, 500),
+                "asymptomatic_percentage": UserSettableParameter('slider', 'Asymptomatic (%)', 40, 0, 100),
                 "social_distance": UserSettableParameter('slider', 'Social Distance ', 2.0, 0.0, 5.0, 0.1),
                 "mobility": UserSettableParameter('slider', 'Mobility', 6.0, 0.0, 10.0, 0.1)}
 
@@ -33,9 +32,12 @@ class CovidTextElement(TextElement):
 
 text_element = CovidTextElement()
 
-chart_element = ChartModule([{"Label": "Susceptible", "Color": "#666666"},
+chart_element1 = ChartModule([{"Label": "Susceptible", "Color": "#666666"},
                              {"Label": "Infected", "Color": "#AA0000"},
                              {"Label": "Recovered", "Color": "#00AA00"}])
 
+chart_element2 = ChartModule([{"Label": "Infected", "Color": "#AA0000"},
+                             {"Label": "Symptomatic", "Color": "Orange"},
+                             {"Label": "Asymptomatic", "Color": "Blue"}])
 
-server = ModularServer(Covid, [virus_canvas, text_element, chart_element], "Covid-19 Model", model_params)
+server = ModularServer(Covid, [text_element, virus_canvas, chart_element1, chart_element2], "Covid-19 Model", model_params)
